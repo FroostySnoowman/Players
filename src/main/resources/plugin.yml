@@ -1,0 +1,12 @@
+name: Players
+version: '1.0'
+main: xyz.nexusservices.players.Players
+api-version: '1.21'
+authors: [ FroostySnoowman, Someone ]
+commands:
+    players:
+        description: Reloads the plugin.
+        usage: /players reload
+    seen:
+        description: Check when a player was last seen.
+        usage: /seen <player>

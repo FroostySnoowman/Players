@@ -1,0 +1,12 @@
+MySQL:
+    URL: ""
+
+Messages:
+    player_not_found: "&cPlayer not found in the database."
+    usage: "&cUsage: /seen <player>"
+    player_info: |
+        &dPlayer&7: &b%name%
+        &dJoined&7: &b%joined%
+        &dLast Logon&7: &b%lastlogon%
+        &dIslands Owned&7: &b%islands_owned%
+        &dIslands Member Of&7: &b%islands_member_of%
