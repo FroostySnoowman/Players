@@ -63,8 +63,8 @@ public class Seen implements CommandExecutor {
                                 String islandNum = rsIslandsOwned.getString("IslandNum");
                                 String claimed = rsIslandsOwned.getString("Claimed");
                                 boolean warStatus = rsIslandsOwned.getBoolean("War");
-                                String warStatusString = warStatus ? "True" : "False";
-                                islandsOwned.add(islandNum + " | " + claimed + " | " + warStatusString);
+                                String warStatusString = warStatus ? "Yes" : "No";
+                                islandsOwned.add(islandNum + " | claimed " + claimed + " | at war? " + warStatusString);
                             }
                         }
                     }
@@ -78,10 +78,18 @@ public class Seen implements CommandExecutor {
                                 String islandNum = rsIslandsMemberOf.getString("IslandNum");
                                 String claimed = rsIslandsMemberOf.getString("Claimed");
                                 boolean warStatus = rsIslandsMemberOf.getBoolean("War");
-                                String warStatusString = warStatus ? "True" : "False";
-                                islandsMemberOf.add(islandNum + " | " + claimed + " | " + warStatusString);
+                                String warStatusString = warStatus ? "Yes" : "No";
+                                islandsMemberOf.add(islandNum + " | claimed " + claimed + " | at war? " + warStatusString);
                             }
                         }
+                    }
+
+                    // Set "none" if no islands found
+                    if (islandsOwned.isEmpty()) {
+                        islandsOwned.add("none");
+                    }
+                    if (islandsMemberOf.isEmpty()) {
+                        islandsMemberOf.add("none");
                     }
 
                     // Construct the message
@@ -127,5 +135,4 @@ public class Seen implements CommandExecutor {
         // Return null if the player has never joined the server
         return null;
     }
-
 }
