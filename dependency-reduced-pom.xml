@@ -4,7 +4,7 @@
   <groupId>xyz.nexusservices</groupId>
   <artifactId>Players</artifactId>
   <name>Players</name>
-  <version>1.3</version>
+  <version>1.4</version>
   <build>
     <defaultGoal>clean package</defaultGoal>
     <resources>

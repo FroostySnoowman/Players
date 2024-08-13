@@ -1,5 +1,6 @@
 package xyz.nexusservices.players.events;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 import xyz.nexusservices.players.utils.Database;
@@ -55,7 +56,11 @@ public class Events implements Listener {
                 }
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            player.sendMessage(translateColorCodes("&cAn error occurred while updating your player data. If this persists, please contact an admin."));
         }
+    }
+
+    private String translateColorCodes(String message) {
+        return ChatColor.translateAlternateColorCodes('&', message);
     }
 }
