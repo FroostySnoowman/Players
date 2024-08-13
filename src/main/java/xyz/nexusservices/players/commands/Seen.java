@@ -109,7 +109,6 @@ public class Seen implements CommandExecutor {
             }
         } catch (SQLException e) {
             sender.sendMessage(translateColorCodes("&cAn error occurred while querying the database."));
-            e.printStackTrace();
         }
 
         return true;
