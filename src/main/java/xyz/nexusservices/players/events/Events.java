@@ -33,15 +33,27 @@ public class Events implements Listener {
 
         try (Connection conn = db.getConnection()) {
             // Check if the player already exists
-            try (PreparedStatement psCheck = conn.prepareStatement("SELECT * FROM players WHERE UUID = ?")) {
+            try (PreparedStatement psCheck = conn.prepareStatement("SELECT Name FROM players WHERE UUID = ?")) {
                 psCheck.setString(1, uuid);
                 try (ResultSet rs = psCheck.executeQuery()) {
                     if (rs.next()) {
-                        // Player exists, update LastLogon
-                        try (PreparedStatement psUpdate = conn.prepareStatement("UPDATE players SET LastLogon = ? WHERE UUID = ?")) {
-                            psUpdate.setDate(1, currentDate);
-                            psUpdate.setString(2, uuid);
-                            psUpdate.executeUpdate();
+                        String storedName = rs.getString("Name");
+                        // Check if the stored name matches the current player's name
+                        if (!storedName.equals(name)) {
+                            // Update the name if mismatched
+                            try (PreparedStatement psUpdateName = conn.prepareStatement("UPDATE players SET Name = ?, LastLogon = ? WHERE UUID = ?")) {
+                                psUpdateName.setString(1, name);
+                                psUpdateName.setDate(2, currentDate);
+                                psUpdateName.setString(3, uuid);
+                                psUpdateName.executeUpdate();
+                            }
+                        } else {
+                            // Just update the LastLogon if name matches
+                            try (PreparedStatement psUpdateLogon = conn.prepareStatement("UPDATE players SET LastLogon = ? WHERE UUID = ?")) {
+                                psUpdateLogon.setDate(1, currentDate);
+                                psUpdateLogon.setString(2, uuid);
+                                psUpdateLogon.executeUpdate();
+                            }
                         }
                     } else {
                         // Player does not exist, insert new record
