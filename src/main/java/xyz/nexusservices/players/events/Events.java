@@ -57,11 +57,12 @@ public class Events implements Listener {
                         }
                     } else {
                         // Player does not exist, insert new record
-                        try (PreparedStatement psInsert = conn.prepareStatement("INSERT INTO players (UUID, Name, Joined, LastLogon) VALUES (?, ?, ?, ?)")) {
+                        try (PreparedStatement psInsert = conn.prepareStatement("INSERT INTO players (UUID, Name, Joined, LastLogon, MVP) VALUES (?, ?, ?, ?, ?)")) {
                             psInsert.setString(1, uuid);
                             psInsert.setString(2, name);
                             psInsert.setDate(3, currentDate);
                             psInsert.setDate(4, currentDate);
+                            psInsert.setBoolean(5, false);
                             psInsert.executeUpdate();
                         }
                     }
