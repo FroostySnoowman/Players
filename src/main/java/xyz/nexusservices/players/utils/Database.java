@@ -11,12 +11,14 @@ public class Database {
 
     public Database(Players players) {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(players.getConfig().getString("MySQL.URL"));
+        String jdbcUrl = players.getConfig().getString("MySQL.URL") + "?autoReconnect=true";
+        config.setJdbcUrl(jdbcUrl);
         config.setMaximumPoolSize(10);
         config.setMinimumIdle(5);
         config.setConnectionTimeout(30000);
         config.setIdleTimeout(600000);
         config.setMaxLifetime(1800000);
+        config.setLeakDetectionThreshold(2000);
 
         this.dataSource = new HikariDataSource(config);
     }
