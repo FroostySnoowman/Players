@@ -29,7 +29,7 @@ public class Seen implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length != 1) {
             sender.sendMessage(translateColorCodes(plugin.getConfig().getString("Messages.usage")));
-            return false;
+            return true;
         }
 
         String playerName = args[0];
