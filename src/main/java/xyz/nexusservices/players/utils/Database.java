@@ -11,8 +11,20 @@ public class Database {
 
     public Database(Players players) {
         HikariConfig config = new HikariConfig();
-        String jdbcUrl = players.getConfig().getString("MySQL.URL") + "?autoReconnect=true";
+
+        // Get database configuration from config.yml
+        String host = players.getConfig().getString("MySQL.host");
+        String username = players.getConfig().getString("MySQL.username");
+        String password = players.getConfig().getString("MySQL.password");
+        String database = players.getConfig().getString("MySQL.database");
+        int port = players.getConfig().getInt("MySQL.port");
+
+        String jdbcUrl = "jdbc:mysql://" + host + ":" + port + "/" + database + "?autoReconnect=true";
+
+        // Configure HikariCP
         config.setJdbcUrl(jdbcUrl);
+        config.setUsername(username);
+        config.setPassword(password);
         config.setMaximumPoolSize(10);
         config.setMinimumIdle(5);
         config.setConnectionTimeout(30000);

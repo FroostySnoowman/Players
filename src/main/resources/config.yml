@@ -1,12 +1,20 @@
 MySQL:
-    URL: ""
+    host: ""
+    username: ""
+    password: ""
+    database: ""
+    port: 3306
 
 Messages:
     player_not_found: "&cPlayer not found in the database."
-    usage: "&cUsage: /seen <player>"
+    seen_usage: "&cUsage: /seen <player>"
     player_info: |
         &dPlayer&7: &b%name%
         &dJoined&7: &b%joined%
         &dLast Logon&7: &b%lastlogon%
         &dIslands Owned&7: &b%islands_owned%
         &dIslands Member Of&7: &b%islands_member_of%
+    error_updating_data: "&cAn error occurred while updating your player data. If this persists, please contact an admin."
+    no_permission_message: "&cYou do not have permission to execute this command."
+    plugin_reloaded_message: "&aThe plugin has been successfully reloaded."
+    reload_usage: "&cUsage: /players reload"

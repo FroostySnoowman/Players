@@ -1,31 +1,38 @@
 package xyz.nexusservices.players.commands;
 
-import xyz.nexusservices.players.Players;
-import xyz.nexusservices.players.utils.Database;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+import org.bukkit.scheduler.BukkitRunnable;
+import xyz.nexusservices.players.Players;
+import xyz.nexusservices.players.utils.Database;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Seen implements CommandExecutor {
+public class Seen implements CommandExecutor, TabCompleter {
     private final Players plugin;
     private final Database db;
+    private final List<String> cachedPlayerNames = new CopyOnWriteArrayList<>();
 
     public Seen(Players plugin, Database db) {
         this.plugin = plugin;
         this.db = db;
+
+        startCacheUpdateTask();
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length != 1) {
-            sender.sendMessage(translateColorCodes(plugin.getConfig().getString("Messages.usage")));
+            sender.sendMessage(translateColorCodes(plugin.getConfig().getString("Messages.seen_usage")));
             return true;
         }
 
@@ -104,6 +111,48 @@ public class Seen implements CommandExecutor {
         }
 
         return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        if (args.length == 1) {
+            String searchTerm = args[0].toLowerCase();
+            List<String> suggestions = new ArrayList<>();
+            for (String playerName : cachedPlayerNames) {
+                if (playerName.toLowerCase().startsWith(searchTerm)) {
+                    suggestions.add(playerName);
+                }
+            }
+            return suggestions;
+        }
+        return Collections.emptyList();
+    }
+
+    private void startCacheUpdateTask() {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                updatePlayerNameCache();
+            }
+        }.runTaskTimerAsynchronously(plugin, 0L, 1200L);
+    }
+
+    private void updatePlayerNameCache() {
+        List<String> newCache = new ArrayList<>();
+        try (Connection conn = db.getConnection()) {
+            try (PreparedStatement ps = conn.prepareStatement("SELECT Name FROM players")) {
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        newCache.add(rs.getString("Name"));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            plugin.getLogger().severe("Failed to update player name cache: " + e.getMessage());
+        }
+
+        cachedPlayerNames.clear();
+        cachedPlayerNames.addAll(newCache);
     }
 
     private String translateColorCodes(String message) {

@@ -1,5 +1,5 @@
 name: Players
-version: '1.9'
+version: '2.0'
 main: xyz.nexusservices.players.Players
 api-version: '1.21'
 authors: [ FroostySnoowman, Someone ]

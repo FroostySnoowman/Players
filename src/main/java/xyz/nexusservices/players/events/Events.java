@@ -3,6 +3,7 @@ package xyz.nexusservices.players.events;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
+import xyz.nexusservices.players.Players;
 import xyz.nexusservices.players.utils.Database;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,10 +14,11 @@ import java.sql.SQLException;
 import java.sql.Date;
 
 public class Events implements Listener {
-
+    private final Players plugin;
     private Database db;
 
-    public Events(Database db) {
+    public Events(Players plugin, Database db) {
+        this.plugin = plugin;
         this.db = db;
     }
 
@@ -69,7 +71,7 @@ public class Events implements Listener {
                 }
             }
         } catch (SQLException e) {
-            player.sendMessage(translateColorCodes("&cAn error occurred while updating your player data. If this persists, please contact an admin."));
+            player.sendMessage(translateColorCodes(plugin.getConfig().getString("Messages.error_updating_data")));
         }
     }
 

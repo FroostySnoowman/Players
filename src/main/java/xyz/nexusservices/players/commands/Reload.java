@@ -17,18 +17,20 @@ public class Reload implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("players.reload")) {
-            sender.sendMessage(ChatColor.RED + "You do not have permission to execute this command.");
+            sender.sendMessage(translateColorCodes(plugin.getConfig().getString("Messages.no_permission_message")));
             return true;
         }
 
-        // Check if the correct argument is provided
         if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
-            // Reload the plugin
             plugin.reloadPlugin();
-            sender.sendMessage(ChatColor.GREEN + "The plugin has been successfully reloaded.");
+            sender.sendMessage(translateColorCodes(plugin.getConfig().getString("Messages.plugin_reloaded_message")));
         } else {
-            sender.sendMessage(ChatColor.RED + "Usage: /players reload");
+            sender.sendMessage(translateColorCodes(plugin.getConfig().getString("Messages.reload_usage")));
         }
         return true;
+    }
+
+    private String translateColorCodes(String message) {
+        return ChatColor.translateAlternateColorCodes('&', message);
     }
 }

@@ -2,12 +2,12 @@ package xyz.nexusservices.players;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
 import xyz.nexusservices.players.commands.Reload;
 import xyz.nexusservices.players.commands.Seen;
 import xyz.nexusservices.players.events.Events;
 import xyz.nexusservices.players.utils.Database;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -20,6 +20,13 @@ public final class Players extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "==========================================");
+        getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "" + ChatColor.BOLD + "Players Plugin Enabled!");
+        getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "Version: " + ChatColor.YELLOW + getDescription().getVersion());
+        getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "Author (Minecraft): " + ChatColor.YELLOW + "FroostySnoowman");
+        getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "Author (Discord): " + ChatColor.YELLOW + "someone0171");
+        getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "==========================================");
+
         // Set the instance
         if (instance == null) instance = this;
 
@@ -34,11 +41,15 @@ public final class Players extends JavaPlugin {
         this.getCommand("players").setExecutor(new Reload(this));
 
         // Events
-        getServer().getPluginManager().registerEvents(new Events(db), this);
+        getServer().getPluginManager().registerEvents(new Events(this, db), this);
     }
 
     @Override
     public void onDisable() {
+        getServer().getConsoleSender().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "==========================================");
+        getServer().getConsoleSender().sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "Players Plugin Disabled.");
+        getServer().getConsoleSender().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "==========================================");
+
         if (db != null) {
             db.close();
         }
@@ -64,9 +75,9 @@ public final class Players extends JavaPlugin {
         }
         initializeDatabase();
 
-        // Re-register commands and events if necessary
+        // Re-register commands and events
         getCommand("seen").setExecutor(new Seen(this, db));
-        getServer().getPluginManager().registerEvents(new Events(db), this);
+        getServer().getPluginManager().registerEvents(new Events(this, db), this);
 
         getLogger().info("Plugin and configuration reloaded successfully.");
     }
