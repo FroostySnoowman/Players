@@ -21,7 +21,7 @@ public final class Players extends JavaPlugin {
     @Override
     public void onEnable() {
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "==========================================");
-        getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "" + ChatColor.BOLD + "Players Plugin Enabled!");
+        getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "" + ChatColor.BOLD + "Players Plugin Enabled");
         getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "Version: " + ChatColor.YELLOW + getDescription().getVersion());
         getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "Author (Minecraft): " + ChatColor.YELLOW + "FroostySnoowman");
         getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "Author (Discord): " + ChatColor.YELLOW + "someone0171");
@@ -47,7 +47,7 @@ public final class Players extends JavaPlugin {
     @Override
     public void onDisable() {
         getServer().getConsoleSender().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "==========================================");
-        getServer().getConsoleSender().sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "Players Plugin Disabled.");
+        getServer().getConsoleSender().sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "Players Plugin Disabled");
         getServer().getConsoleSender().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "==========================================");
 
         if (db != null) {
